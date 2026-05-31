@@ -3,6 +3,8 @@ const path     = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+const Message = require('./Models/message');
+
 const app = express();
 
 // ── Middleware ──
@@ -12,16 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ── Message Schema ──
-const messageSchema = new mongoose.Schema({
-    name:      { type: String, required: true },
-    email:     { type: String, required: true },
-    subject:   { type: String },
-    message:   { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-const Message = mongoose.model('Message', messageSchema);
 
 // ── Routes ──
 app.get('/', function (req, res) {
@@ -35,10 +27,6 @@ app.post('/contact', async function (req, res) {
 
         const newMessage = new Message({ name, email, subject, message });
         await newMessage.save();
-
-        console.log('📩 Message saved to MongoDB!');
-        console.log('Name:', name);
-        console.log('Email:', email);
 
         res.json({ success: true, message: 'Message saved successfully!' });
 
