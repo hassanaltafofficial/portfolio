@@ -3,7 +3,7 @@ const path     = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const Message = require('./Models/message');
+const Message = require('./models/message');
 
 const app = express();
 
